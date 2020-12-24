@@ -31,17 +31,17 @@ class DishDetail extends Component {
 		if (this.props.dish != null) {
 			const usersComments = this.props.dish.comments.map((comment) => {
 				return (
-					<div key={comment.id}>
-						<p>{comment.comment}</p>
-						<p>
+					<ul className="list-unstyled" key={comment.id}>
+						<li className="mb-1">{comment.comment}</li>
+						<li>
 							-- {comment.author},{' '}
 							{new Date(comment.date).toLocaleDateString('en', {
 								year: 'numeric',
 								month: 'short',
 								day: 'numeric'
 							})}
-						</p>
-					</div>
+						</li>
+					</ul>
 				);
 			});
 			return (
@@ -57,11 +57,13 @@ class DishDetail extends Component {
 
 	render () {
 		return (
-			<div className="row">
-				<div className="col-12 col-md-5 m-1">
-					{this.renderDish(this.props.selectedDish)}
+			<div className="container">
+				<div className="row">
+					<div className="col-12 col-md-5 m-1">
+						{this.renderDish(this.props.selectedDish)}
+					</div>
+					{this.renderComments(this.props.selectedDish)}
 				</div>
-				{this.renderComments(this.props.selectedDish)}
 			</div>
 		);
 	}
