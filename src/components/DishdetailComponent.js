@@ -55,8 +55,12 @@ class CommentForm extends Component {
 
 	handleSubmit (values) {
 		this.toggleModal();
-		console.log('Current State is:' + JSON.stringify(values));
-		alert('Current State is:' + JSON.stringify(values));
+		this.props.addComment(
+			this.props.dishId,
+			values.rating,
+			values.author,
+			values.comment
+		);
 	}
 
 	render () {
@@ -93,15 +97,15 @@ class CommentForm extends Component {
 							</Row>
 
 							<Row className="form-group">
-								<Label htmlFor="name" md={12}>
+								<Label htmlFor="author" md={12}>
 									Your Name
 								</Label>
 								<Col md={12}>
 									<Control.text
-										model=".name"
+										model=".author"
 										className="form-control"
-										id="name"
-										name="name"
+										id="author"
+										name="author"
 										placeholder="Your Name"
 										validators={{
 											required,
@@ -111,7 +115,7 @@ class CommentForm extends Component {
 									/>
 									<Errors
 										className="text-danger"
-										model=".name"
+										model=".author"
 										show="touched"
 										messages={{
 											required: 'Required',
@@ -157,7 +161,7 @@ class CommentForm extends Component {
 	}
 }
 
-function RenderComments ({ comments }) {
+function RenderComments ({ comments, addComment, dishId }) {
 	const usersComments = comments.map((comment) => {
 		return (
 			<ul className="list-unstyled" key={comment.id}>
@@ -177,7 +181,7 @@ function RenderComments ({ comments }) {
 		<div className="col-12 col-md-5 m-1">
 			<h4 className="mb-4">Comments</h4>
 			{usersComments}
-			<CommentForm />
+			<CommentForm dishId={dishId} addComment={addComment} />
 		</div>
 	);
 }
@@ -202,7 +206,11 @@ const DishDetail = (props) => {
 				</div>
 				<div className="row">
 					<RenderDish dish={props.dish} />
-					<RenderComments comments={props.comments} />
+					<RenderComments
+						comments={props.comments}
+						addComment={props.addComment}
+						dishId={props.dish.id}
+					/>
 				</div>
 			</div>
 		);
