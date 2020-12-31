@@ -20,21 +20,29 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 function RenderDish ({ dish }) {
 	return (
 		<div className="col-12 col-md-5 m-1">
-			<Card>
-				<CardImg
-					width="100%"
-					src={baseUrl + dish.image}
-					alt={dish.name}
-				/>
-				<CardBody>
-					<CardTitle>{dish.name}</CardTitle>
-					<CardText>{dish.description}</CardText>
-				</CardBody>
-			</Card>
+			<FadeTransform
+				in
+				transformProps={{
+					exitTransform: 'scale(0.5) translateY(-50%)'
+				}}
+			>
+				<Card>
+					<CardImg
+						width="100%"
+						src={baseUrl + dish.image}
+						alt={dish.name}
+					/>
+					<CardBody>
+						<CardTitle>{dish.name}</CardTitle>
+						<CardText>{dish.description}</CardText>
+					</CardBody>
+				</Card>
+			</FadeTransform>
 		</div>
 	);
 }
@@ -171,15 +179,21 @@ function RenderComments ({ comments, postComment, dishId }) {
 	const usersComments = comments.map((comment) => {
 		return (
 			<ul className="list-unstyled" key={comment.id}>
-				<li className="mb-1">{comment.comment}</li>
-				<li>
-					-- {comment.author},{' '}
-					{new Date(comment.date).toLocaleDateString('en', {
-						year: 'numeric',
-						month: 'short',
-						day: 'numeric'
-					})}
-				</li>
+				<Stagger in>
+					<Fade in>
+						<li className="mb-1">{comment.comment}</li>
+					</Fade>
+					<Fade in>
+						<li>
+							-- {comment.author},{' '}
+							{new Date(comment.date).toLocaleDateString('en', {
+								year: 'numeric',
+								month: 'short',
+								day: 'numeric'
+							})}
+						</li>
+					</Fade>
+				</Stagger>
 			</ul>
 		);
 	});
