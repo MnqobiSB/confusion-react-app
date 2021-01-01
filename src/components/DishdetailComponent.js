@@ -178,29 +178,27 @@ class CommentForm extends Component {
 function RenderComments ({ comments, postComment, dishId }) {
 	const usersComments = comments.map((comment) => {
 		return (
-			<ul className="list-unstyled" key={comment.id}>
-				<Stagger in>
-					<Fade in>
-						<li className="mb-1">{comment.comment}</li>
-					</Fade>
-					<Fade in>
-						<li>
-							-- {comment.author},{' '}
-							{new Date(comment.date).toLocaleDateString('en', {
-								year: 'numeric',
-								month: 'short',
-								day: 'numeric'
-							})}
-						</li>
-					</Fade>
-				</Stagger>
-			</ul>
+			<Fade in>
+				<li className="mb-1" key={comment.id}>
+					<p>{comment.comment}</p>
+					<p>
+						-- {comment.author},{' '}
+						{new Date(comment.date).toLocaleDateString('en', {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric'
+						})}
+					</p>
+				</li>
+			</Fade>
 		);
 	});
 	return (
 		<div className="col-12 col-md-5 m-1">
 			<h4 className="mb-4">Comments</h4>
-			{usersComments}
+			<ul className="list-unstyled">
+				<Stagger in>{usersComments}</Stagger>
+			</ul>
 			<CommentForm dishId={dishId} postComment={postComment} />
 		</div>
 	);
